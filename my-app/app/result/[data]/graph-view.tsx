@@ -30,6 +30,7 @@ const GraphView = (props: Props) => {
     },
     edges: {
       color: "#000000",
+      smooth: true,
     },
     height: "800px",
   };
