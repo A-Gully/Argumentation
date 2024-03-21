@@ -47,20 +47,22 @@ const GraphInputForm = (props: Props) => {
   };
 
   return (
-    <form action={createGraphData}>
-      <label>
+    <form className="form-container" action={createGraphData}>
+      <label className="form-label">
         Insert Relations:
         <input
-          id="relatiosn"
+          id="relations"
           type="text"
           name="relations"
           value={formData.relations}
-          size={50}
           onChange={handleChange}
+          className="form-input"
         />
       </label>
-      <button type="submit">Submit</button>
-      <label>eg1: (a),(b) eg2: (a,b),(b,c) </label>
+      <button className="form-submit" type="submit">
+        Submit
+      </button>
+      <label className="form-label">Example: (x),(y),(a,b),(b,c)</label>
     </form>
   );
 };
