@@ -4,22 +4,32 @@ import React from "react";
 import VisGraph, { Edge, Node } from "react-vis-graph-wrapper";
 import { GraphData } from "./page";
 import { groundedLabelling } from "./grounded-labelling";
+import { admissableLabelling } from "./admissable-labelling";
+import { preferredLabelling } from "./preferred-labelling";
 
 type Props = {
   data: GraphData;
-  grounded: boolean;
+  labelling: string;
 };
 
 const GraphView = (props: Props) => {
-  console.log(props.grounded);
   let graph = {
     nodes: props.data.nodes,
     edges: props.data.edges,
   };
-  if (props.grounded == true) {
-    console.log(groundedLabelling(props.data.nodes, props.data.edges));
+  if (props.labelling == "G") {
     graph = {
       nodes: groundedLabelling(props.data.nodes, props.data.edges),
+      edges: props.data.edges,
+    };
+  } else if (props.labelling == "A") {
+    graph = {
+      nodes: admissableLabelling(props.data.nodes, props.data.edges),
+      edges: props.data.edges,
+    };
+  } else if (props.labelling == "P") {
+    graph = {
+      nodes: preferredLabelling(props.data.nodes, props.data.edges),
       edges: props.data.edges,
     };
   }
@@ -32,9 +42,9 @@ const GraphView = (props: Props) => {
       color: "#000000",
       smooth: true,
     },
-    height: "800px",
+    height: "500px",
   };
 
-  return <VisGraph options={options} graph={graph} />;
+  return <VisGraph className="graph" options={options} graph={graph} />;
 };
 export default GraphView;
