@@ -37,7 +37,7 @@ export default function Page({ params }: { params: { data: string } }) {
           </Link>
         </li>
         <li>
-          <Link className="preferred" href={"/result/" + str + "?labelling=A"}>
+          <Link className="admissable" href={"/result/" + str + "?labelling=A"}>
             Admissable
           </Link>
         </li>
