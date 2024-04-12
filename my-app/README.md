@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+B.1 Install Instructions
 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. You must have Node.js v20.11.0 or above. (you could try with an older version of Node
+   but this hasn’t been tested)
+2. After opening the project directory, run the following command in the terminal: npm
+   install
+3. Then to host the web app on your local server: npm run dev
+4. To run tests: npm run test
+   B.2 App Instructions
+   • Accessing the Tool: Navigate to the tool’s website using your preferred web browser.
+   • Home Page Overview: Upon arrival at the home page, you will find options to create a
+   new argumentation graph and learn about different labelling algorithms.
+   • Choose Input Method: Select either the relational or logical structure option to input
+   your graph data. For relational input, enter pairs of arguments representing directed
+   edges (e.g., (A,B) for an attack from A to B). For logical input, specify facts and rules in
+   the provided fields.
+   • Submit: Once you have entered your data, click the ’Submit’ or ’Generate’ button to
+   create your graph.
+   • Interacting with the Graph: The generated graph will be displayed on the ’Graph’ page.
+   You can interact with the graph by clicking and dragging nodes or zooming in and out
+   for better visibility.
+   • Select Algorithm: Choose from the Grounded, Admissible, or Preferred labelling algo-
+   rithm to analyse your graph.
+   • Exploring Labelling Results: For the Preferred algorithm, you may see multiple possi-
+   ble labellings. Use the provided controls to scroll through these labellings and explore
+   different argument subsets.
+   • Learning about Algorithms: Click the ’Info’ button next to each algorithm’s name to
+   open a modal with a detailed description of how it works.
+   • Navigating the Application: Use the persistent ’Home’ button at the top left to return to
+   the home page at any point.
+   • To create a new graph or change algorithms, navigate using the menu or back to the home
+   page.
+   • Saving Your Work: Currently, you may take a screenshot or note the URL where your
+   generated graph is displayed to save your work. Future updates may include a feature to
+   save your graphs directly within the application.
+   •
+   By following these instructions, you should be able to effectively use the Abstract Argumenta-
+   tion Framework Tool to create, label, and analyse argumentation graphs.
+   B.3 Warnings
+   • Any user input that doesn’t adhere to the example structure shown on the web page, may
+   give unexpected results.

@@ -10,9 +10,9 @@ export function groundedLabelling(nodes: Node[], edges: Edge[]){
             dic[node.id] = 'grey'
         }
     });
-
-    while (nodes.length > 0){
-        const size = nodes.length
+    let changed = true;
+    while (changed){
+        changed = false;
         nodes.forEach(node => {
             let inParent = false;
             let undecidedParent = false;
@@ -24,18 +24,24 @@ export function groundedLabelling(nodes: Node[], edges: Edge[]){
                 }
             });
             if (node.id && !inParent && !undecidedParent){
+                const old = dic[node.id];
                 dic[node.id] = 'green'
                 nodes.filter((e) => {e != node})
+                if(old != dic[node.id]){
+                    changed = true;
+                }
             }
             else if (node.id && inParent){
+                const old = dic[node.id];
                 dic[node.id] = 'red';
                 nodes.filter((e) => {e != node})
+                if(old != dic[node.id]){
+                    changed = true;
+                }
             }
         });
-        if(size == nodes.length){
-            break
-        }
     }
+    
 
     return (newNodes.map((node)=>{
         let newNode:Node = {}

@@ -1,9 +1,11 @@
 body {
-    background: linear-gradient(to bottom right, #54ffff, #0088ff);
-    height: 100vh;
+    background-color: #a8e8fc;
     justify-content: center;
     align-items: center;
+    align-content: center;
     background-size: cover;
+    text-align: center;
+    
 }
 
 h1 {
@@ -15,6 +17,26 @@ h1 {
     animation: fadeInDown 1s ease forwards;
     opacity: 0;
     text-align: center;
+    margin-left: 10px;
+}
+
+h2 {
+    font-size: 3em;
+    font: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: fadeInDown 3s ease forwards;
+    opacity: 0;
+    text-align: center;
+    margin-top: -20px;
+}
+
+div.vl {
+    border-left: 6px double rgb(112, 113, 123);
+    height: 600px;
+    width: 5px;
+    margin-left: 20px;
 }
 
 /* Animation */
@@ -47,7 +69,7 @@ a.preferred {
     border-radius: 5px;
     transition: background-color 0.3s ease;
 }
-a.admissable {
+a.admissible {
     display: inline-block;
     padding: 10px 20px;
     text-decoration: none;
@@ -103,14 +125,51 @@ a:visited {
 a {
     user-select: none;
 }
-ul{
-    list-style-type: none;
+div.forms{
+    text-align: center;
+}
+ul.forms{
+    display:flex;
+    margin-left: 13%;
+}
+ul.labellings{
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+ul.graphs{
+    display: -ms-inline-flexbox;
 }
 
-li{
-    display: inline;
-    margin: 10px;
+li.forms {
     color: #fff;
+    display: inline-block;
+}
+li.forms1{
+    display: inline-block;
+    padding-top: 150px;
+    padding-right: 200px;
+}
+li.forms2{
+    padding-top: 150px;
+    padding-left: 200px;
+    display: inline-block;
+}
+li.labellings{
+    justify-content: center;
+    align-content: first baseline;
+    align-self: center;
+    text-align: center;
+    display:inline-block;
+    margin-right: 50px;
+    margin-left: 50px;
+    color: #fff;
+    font-style: oblique;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+li.graphs{
+    color: #fff;
+    display: inline-block;
+    width: 600px;
 }
 
 div {
@@ -143,9 +202,8 @@ div {
 .form-container {
     width: fit-content;
     /* Adjust width as needed */
-    margin: 0 auto;
     /* Center the form horizontally */
-    padding: 10px;
+    padding-bottom: 200px;
     text-align: center;
 }
 
@@ -159,7 +217,8 @@ div {
 .form-label {
     display: block;
     /* Make labels display as block elements */
-    margin-bottom: 5px;
+    padding-bottom: 10px;
+    margin-top: 5px;
     /* Spacing between labels and input fields */
     font-weight: bold;
     /* Bold font for labels */
@@ -195,10 +254,139 @@ div {
     /* Rounded corners for the submit button */
     cursor: pointer;
     /* Change cursor to pointer on hover */
+    margin-top: 10px;
+    font-style: oblique;
+}
+.logic-form-submit {
+    width: 108%;
+    /* Submit button takes up full width of the container */
+    padding: 10px;
+    /* Padding for submit button */
+    background-color: #007bff;
+    /* Background color of the submit button */
+    color: #fff;
+    /* Text color of the submit button */
+    border: none;
+    /* Remove border */
+    border-radius: 5px;
+    /* Rounded corners for the submit button */
+    cursor: pointer;
+    /* Change cursor to pointer on hover */
+    margin-top: 10px;
+    font-style: oblique;
 }
 
 /* Style for submit button on hover */
 .form-submit:hover {
     background-color: #0056b3;
     /* Darker background color on hover */
+}
+
+img.logo{
+    border: 3px solid rgb(0, 4, 76);
+}
+
+.header{
+    display:flex;
+    justify-content: center;
+}
+a.info{
+    color: #0e395a;
+    padding-top: 3px;
+    border-radius: 3px;
+}
+a.info:hover{
+    color: #fff;
+}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    opacity: 0.5;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1050;
+    top: 0;
+    left: 25%;
+    width: 50%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.modal-open .modal {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.3rem;
+    outline: 0;
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+    margin: 1.75rem auto;
+    padding: 20px;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #dee2e6;
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
+}
+
+.modal-title {
+    margin-bottom: 0;
+    line-height: 1.5;
+}
+
+.modal-body {
+    position: relative;
+    flex: 1 1 auto;
+    padding: 1rem;
+}
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+}
+
+.close:hover {
+    color: #000;
+    text-decoration: none;
+    opacity: 0.75;
 }

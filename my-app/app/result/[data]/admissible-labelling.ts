@@ -2,11 +2,11 @@ import { Edge, IdType, Node } from "react-vis-graph-wrapper";
 
 type Label = 'green' | 'red' | 'grey';
 
-interface Labelling {
+export interface Labelling {
     [id: IdType] : Label
 }
 
-function isLegallyIn(L: Labelling, nodeID: IdType, edges: Edge[]): boolean {
+export function isLegallyIn(L: Labelling, nodeID: IdType, edges: Edge[]): boolean {
     for (const x of edges) {
         if (x.to == nodeID){
             if (x.from && L[x.from] == 'green') {
@@ -17,7 +17,7 @@ function isLegallyIn(L: Labelling, nodeID: IdType, edges: Edge[]): boolean {
     return true;
 }
 
-function isLegallyOut(L: Labelling, nodeID: IdType, edges: Edge[]): boolean {
+export function isLegallyOut(L: Labelling, nodeID: IdType, edges: Edge[]): boolean {
     for (const x of edges) {
         if (x.to == nodeID){
             if (x.from && L[x.from] == 'green') {
@@ -28,7 +28,7 @@ function isLegallyOut(L: Labelling, nodeID: IdType, edges: Edge[]): boolean {
     return false;
 }
 
-function transitionStep(L: Labelling, nodeID: IdType, edges: Edge[]): Labelling {
+export function transitionStep(L: Labelling, nodeID: IdType, edges: Edge[]): Labelling {
     let newLabelling: Labelling = { ...L };
     if (nodeID){
         newLabelling[nodeID] = 'red';
@@ -46,7 +46,7 @@ function transitionStep(L: Labelling, nodeID: IdType, edges: Edge[]): Labelling 
     return newLabelling;
 }
 
-export function admissableLabelling(nodes: Node[], edges: Edge[]){
+export function admissibleLabelling(nodes: Node[], edges: Edge[]){
     let newNodes = nodes;
     let labelling: Labelling = {};
     for (const node of nodes) {

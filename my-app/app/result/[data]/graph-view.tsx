@@ -4,7 +4,7 @@ import React from "react";
 import VisGraph, { Edge, Node } from "react-vis-graph-wrapper";
 import { GraphData } from "./page";
 import { groundedLabelling } from "./grounded-labelling";
-import { admissableLabelling } from "./admissable-labelling";
+import { admissibleLabelling } from "./admissible-labelling";
 import { preferredLabelling } from "./preferred-labelling";
 
 type Props = {
@@ -13,25 +13,43 @@ type Props = {
 };
 
 const GraphView = (props: Props) => {
-  let graph = {
-    nodes: props.data.nodes,
-    edges: props.data.edges,
-  };
+  let graph = [
+    {
+      nodes: props.data.nodes,
+      edges: props.data.edges,
+    },
+  ];
   if (props.labelling == "G") {
-    graph = {
-      nodes: groundedLabelling(props.data.nodes, props.data.edges),
-      edges: props.data.edges,
-    };
+    graph = [
+      {
+        nodes: groundedLabelling(props.data.nodes, props.data.edges),
+        edges: props.data.edges,
+      },
+    ];
   } else if (props.labelling == "A") {
-    graph = {
-      nodes: admissableLabelling(props.data.nodes, props.data.edges),
-      edges: props.data.edges,
-    };
+    graph = [
+      {
+        nodes: admissibleLabelling(props.data.nodes, props.data.edges),
+        edges: props.data.edges,
+      },
+    ];
   } else if (props.labelling == "P") {
-    graph = {
-      nodes: preferredLabelling(props.data.nodes, props.data.edges),
-      edges: props.data.edges,
-    };
+    const possibleNodes = preferredLabelling(
+      props.data.nodes,
+      props.data.edges
+    );
+    graph = [];
+    for (const nodes of possibleNodes) {
+      graph.push({
+        nodes: nodes,
+        edges: props.data.edges,
+      });
+    }
+  } else {
+    props.data.nodes.forEach((node) => {
+      node.color = "white";
+      node.borderWidth = 3;
+    });
   }
 
   const options = {
@@ -45,6 +63,14 @@ const GraphView = (props: Props) => {
     height: "500px",
   };
 
-  return <VisGraph className="graph" options={options} graph={graph} />;
+  return (
+    <ul className="graphs">
+      {graph.map((graph, i) => (
+        <li className="graphs" key={i}>
+          <VisGraph key={i} className="graph" options={options} graph={graph} />
+        </li>
+      ))}
+    </ul>
+  );
 };
 export default GraphView;

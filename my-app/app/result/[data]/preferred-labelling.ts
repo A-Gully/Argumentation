@@ -3,24 +3,30 @@ type Label = 'green' | 'red' | 'grey';
 type Labelling = Map<IdType,Label>
 let candidateLabellings: Labelling[] = [];
 
-export function preferredLabelling(nodes: Node[], edges: Edge[]): Node[]{
+export function preferredLabelling(nodes: Node[], edges: Edge[]): Node[][]{
     let newNodes:Node[] = nodes;
     candidateLabellings = [];
-    let labelling: Labelling = new Map<IdType,Label>()
+    let labelling: Labelling = new Map<IdType,Label>();
     for (const x of nodes){
         if(x.id){
             labelling.set(x.id, 'green');
         }
     }
     findLabellings(labelling, edges);
+    findLabellings(labelling, edges.sort());
     console.log(candidateLabellings);
-    return (newNodes.map((node)=>{
-        let newNode:Node = {};
-        if (node.id){
-            newNode = {id: node.id, label: node.label, title: node.title, color: candidateLabellings[candidateLabellings.length-1].get(node.id)};
-        }
-        return(newNode);
-    }));
+    let possibleNodes: Node[][] = []
+    for(const candidate of candidateLabellings){
+        possibleNodes.push(newNodes.map((node)=>{
+            let newNode:Node = {};
+            if (node.id){
+                newNode = {id: node.id, label: node.label, title: node.title, color: candidate.get(node.id)};
+            }
+            return(newNode);
+        }))
+    }
+    console.log(possibleNodes);
+    return possibleNodes;
 }
 
 function getInNodes(L: Labelling):Set<IdType>{
@@ -28,26 +34,6 @@ function getInNodes(L: Labelling):Set<IdType>{
     L.forEach((label,nodeID)=>{
         if(label == 'green'){
             set.add(nodeID);
-        }
-    })
-    return set;
-}
-
-function getUnNodes(L: Labelling):Set<IdType>{
-    let set = new Set<IdType>();
-    L.forEach((label,nodeID)=>{
-        if(label == 'grey'){
-            set.add(nodeID);
-        }
-    })
-    return set;
-}
-
-function getOutNodes(L: Labelling):IdType[]{
-    let set:IdType[] = [];
-    L.forEach((label,nodeID)=>{
-        if(label == 'red'){
-            set.push(nodeID);
         }
     })
     return set;
@@ -68,6 +54,9 @@ function isSubset(subset: Set<IdType>, set: Set<IdType>): boolean {
             return false;
         }
     })
+    if(subset.size == set.size){
+        return false;
+    }
     return true;
 }
 
@@ -81,12 +70,12 @@ function findLabellings(L: Labelling, E:Edge[]) {
         );
         console.log(L)
         candidateLabellings.push(L);
-        return;
     }else {
         const superNodes = getSuperIllegallyInArg(L,E)
         if (superNodes.length) {
-            const superI = superNodes[0]
-            findLabellings(transitionStep(L,  superI, E), E);
+            for(const superI of superNodes){
+                findLabellings(transitionStep(L,  superI, E), E);
+            }
         } else {
             for (const x of getIllegallyInNodes(L, E)) {
                 const update = transitionStep(L, x, E);
@@ -109,20 +98,6 @@ function hasIllegallyInNodes(L: Labelling, edges: Edge[]): boolean {
     for (const x of edges){
         if (x.from && x.to && L.get(x.to) == 'green' && L.get(x.from) == 'green'){
             return true;
-        }
-    }
-    return false;
-}
-
-
-function hasSuperIllegallyInArg(L: Labelling, edges: Edge[]): boolean {
-    for (const x of edges){
-        if (x.to && L.get(x.to) == 'green' && !isLegallyIn(x.to, L, edges)){
-            if(x.from && ( L.get(x.from) == 'green' && (isLegallyIn(x.from, L, edges)))){
-                return true;
-            }else if(x.from && L.get(x.from) == 'grey'){
-                return true;
-            }
         }
     }
     return false;
@@ -229,62 +204,3 @@ function getIllegallyInNodes(L: Labelling, edges: Edge[]): IdType[] {
     console.log("/illegal IN/")
     return illegalNodes;
 }
-
-function getIllegallyOutNodes(L: Labelling, edges: Edge[]): IdType[] {
-    let illegalNodes:IdType[] = [];
-    const illegalOut = getOutNodes(L);
-    
-    for (const node of illegalOut) {
-        if(!isLegallyOut(node, L, edges)){
-            illegalNodes.push(node);
-        }
-    }
-    illegalNodes = illegalNodes.filter((item,
-        index) => illegalNodes.indexOf(item) == index);
-    for (const x of illegalNodes){
-        console.log(x+":"+L.get(x))
-    }
-    console.log("/illegal OUT/")
-    return illegalNodes;
-}
-function getIllegallyUnNodes(L: Labelling, edges: Edge[]): IdType[] {
-    let illegalNodes:IdType[] = [];
-    for (const x of edges) {
-        if(x.to && L.get(x.to) == 'grey'){
-            let isIllegal = false;
-            let undecParent = false;
-            for(const y of edges){
-                if(x.to == y.to && y.from && L.get(y.from) == 'green'){
-                    isIllegal = true;
-                }
-                if(x.to == y.to && y.from && L.get(y.from) == 'grey'){
-                    undecParent = true;
-                }
-            }
-            if (isIllegal || !undecParent){
-                illegalNodes.push(x.to)
-            }
-        }
-    }
-    illegalNodes = illegalNodes.filter((item,
-        index) => illegalNodes.indexOf(item) == index);
-    for (const x of illegalNodes){
-        console.log(x+":"+L.get(x))
-    }
-    console.log("/illegal UN/")
-    return illegalNodes;
-}
-// // Example usage
-// const args = new Set<Argument>(["A", "B", "C"]);
-// const attacks: Relation[] = [["A", "B"], ["B", "C"]];
-// const af = new ArgumentationFramework(args, attacks);
-
-// // Assuming all-in labelling for initialization
-// let initialLabelling: Labelling = {
-//     inArgs: new Set(args),
-//     outArgs: new Set(),
-//     undecidedArgs: new Set(),
-// };
-
-// findLabellings(initialLabelling);
-// console.log(candidateLabellings);
