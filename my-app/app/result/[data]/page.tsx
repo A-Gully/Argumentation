@@ -5,12 +5,13 @@ import { Node, Edge } from "react-vis-graph-wrapper";
 import { useSearchParams } from "next/navigation";
 import { AiFillHome } from "react-icons/ai";
 import Link from "next/link";
-import Example from "./about-grounded";
+import InfoModal from "./about-grounded";
 
 export type GraphData = {
   nodes: Node[];
   edges: Edge[];
 };
+//the graph page
 export default function Page({ params }: { params: { data: string } }) {
   const searchParams = useSearchParams();
   const search = searchParams.get("labelling");
@@ -22,8 +23,9 @@ export default function Page({ params }: { params: { data: string } }) {
     nodes: [],
     edges: [],
   };
+  //obtain graph data from URI
   const str = decodeURIComponent(params.data);
-  console.log(str);
+  //turn it into an object
   mod = JSON.parse(str);
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -37,19 +39,19 @@ export default function Page({ params }: { params: { data: string } }) {
           <Link className="grounded" href={"/result/" + str + "?labelling=G"}>
             Grounded
           </Link>
-          <Example title={groundedTitle} info={groundedInfo} />
+          <InfoModal title={groundedTitle} info={groundedInfo} />
         </li>
         <li className="labellings">
           <Link className="admissible" href={"/result/" + str + "?labelling=A"}>
             Admissible
           </Link>
-          <Example title={adTitle} info={adInfo} />
+          <InfoModal title={adTitle} info={adInfo} />
         </li>
         <li className="labellings">
           <Link className="preferred" href={"/result/" + str + "?labelling=P"}>
             Preferred
           </Link>
-          <Example title={preTitle} info={preInfo} />
+          <InfoModal title={preTitle} info={preInfo} />
         </li>
       </ul>
       <GraphView data={mod} labelling={labelling} />
@@ -57,6 +59,7 @@ export default function Page({ params }: { params: { data: string } }) {
   );
 }
 
+//Info for modal
 const groundedTitle = "The Grounded Algorithm";
 const groundedInfo =
   "For any argumentation framework, there is guaranteed to be exactly one grounded extension. The Grounded semantics provides a way to identify a minimal and conflict-free set of arguments that are accepted based on the given Dung graph. To compute the Grounded set, you start with an initially empty set of accepted arguments. Then, iteratively, you add arguments that are directly attacked by arguments in the accepted set until no more arguments can be added. An argument is added to the Grounded set if all its attackers are already in the set. The resulting set contains arguments that cannot be attacked by any other arguments in the framework, and adding any other argument would lead to conflicts.";

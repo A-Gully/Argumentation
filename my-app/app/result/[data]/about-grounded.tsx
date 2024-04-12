@@ -11,7 +11,8 @@ type Props = {
   info: string;
 };
 
-function Example(props: Props) {
+//Information Modal: Display title and info props
+function InfoModal(props: Props) {
   const { title, info } = props;
   const [modalOpen, setModalOpen] = React.useState(false);
   return (
@@ -48,4 +49,4 @@ function Example(props: Props) {
   );
 }
 
-export default Example;
+export default InfoModal;

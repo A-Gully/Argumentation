@@ -4,12 +4,12 @@ import { useState } from "react";
 import { createGraphData } from "./actions";
 
 type Props = {};
-
+//Logic program input form
 const GraphInputForm = (props: Props) => {
   const [formData, setFormData] = useState({
     relations: "",
   });
-
+  //saves changes made in the form
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({

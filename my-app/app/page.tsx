@@ -1,6 +1,6 @@
 import GraphInputForm from "./graph-input-form";
 import LogicGraphInputForm from "./logic-graph-input-form";
-
+// home page
 export default function Home() {
   return (
     <main>

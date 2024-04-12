@@ -11,7 +11,7 @@ type Props = {
   data: GraphData;
   labelling: string;
 };
-
+//generates graph using the given graph data and type of labelling (if given)
 const GraphView = (props: Props) => {
   let graph = [
     {

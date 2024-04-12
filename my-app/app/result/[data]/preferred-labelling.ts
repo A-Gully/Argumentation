@@ -12,9 +12,9 @@ export function preferredLabelling(nodes: Node[], edges: Edge[]): Node[][]{
             labelling.set(x.id, 'green');
         }
     }
+    //executes algorithm twice to find as many solutions as possible
     findLabellings(labelling, edges);
     findLabellings(labelling, edges.sort());
-    console.log(candidateLabellings);
     let possibleNodes: Node[][] = []
     for(const candidate of candidateLabellings){
         possibleNodes.push(newNodes.map((node)=>{
@@ -25,10 +25,10 @@ export function preferredLabelling(nodes: Node[], edges: Edge[]): Node[][]{
             return(newNode);
         }))
     }
-    console.log(possibleNodes);
+    //returns array of nodes each being a possible solution to the preffered algorithm
     return possibleNodes;
 }
-
+//gets all nodes that are in 
 function getInNodes(L: Labelling):Set<IdType>{
     let set = new Set<IdType>();
     L.forEach((label,nodeID)=>{
@@ -38,7 +38,7 @@ function getInNodes(L: Labelling):Set<IdType>{
     })
     return set;
 }
-
+//checks if current set of in nodes is subset of the in nodes of any of the candidates
 function isInSubsetOfAnother(inNodes: Set<IdType>): boolean {
     for (const candidate of candidateLabellings) {
         if (isSubset(inNodes, getInNodes(candidate))) {
@@ -59,7 +59,7 @@ function isSubset(subset: Set<IdType>, set: Set<IdType>): boolean {
     }
     return true;
 }
-
+//the core function for the preffered algorithm
 function findLabellings(L: Labelling, E:Edge[]) {
     if (isInSubsetOfAnother(getInNodes(L))) {
         return;
@@ -68,11 +68,11 @@ function findLabellings(L: Labelling, E:Edge[]) {
         candidateLabellings = candidateLabellings.filter(
             (candidate) => !isSubset(getInNodes(candidate), getInNodes(L))
         );
-        console.log(L)
         candidateLabellings.push(L);
     }else {
         const superNodes = getSuperIllegallyInArg(L,E)
         if (superNodes.length) {
+            //try all super illegall yin nodes to maximise potential solutions
             for(const superI of superNodes){
                 findLabellings(transitionStep(L,  superI, E), E);
             }
@@ -85,7 +85,7 @@ function findLabellings(L: Labelling, E:Edge[]) {
     }
 
 }
-
+//this is to avoid typescript object reference
 function copyLabelling(oldL: Labelling): Labelling {
   const copy:Labelling = new Map<IdType, Label>();
   oldL.forEach((label, nodeId) => {
@@ -93,7 +93,7 @@ function copyLabelling(oldL: Labelling): Labelling {
   })
   return copy;
 }
-
+//checks if a labelling object has illegally in nodes
 function hasIllegallyInNodes(L: Labelling, edges: Edge[]): boolean {
     for (const x of edges){
         if (x.from && x.to && L.get(x.to) == 'green' && L.get(x.from) == 'green'){
@@ -102,7 +102,7 @@ function hasIllegallyInNodes(L: Labelling, edges: Edge[]): boolean {
     }
     return false;
 }
-
+//checks if a node is legally in 
 function isLegallyIn(nodeID: IdType, L: Labelling, edges: Edge[]){
     for (const x of edges) {
         if (x.to == nodeID){
@@ -113,7 +113,7 @@ function isLegallyIn(nodeID: IdType, L: Labelling, edges: Edge[]){
     }
     return true;
 }
-
+//checks if a node is legally out
 function isLegallyOut(nodeID: IdType, L: Labelling, edges: Edge[]){
     for (const x of edges) {
         if (x.to == nodeID){
@@ -124,7 +124,7 @@ function isLegallyOut(nodeID: IdType, L: Labelling, edges: Edge[]){
     }
     return false;
 }
-
+//checks if a node is legally undecided
 function isLegallyUn(nodeID: IdType, L: Labelling, edges: Edge[]){
     for (const x of edges) {
         if (x.to == nodeID){
@@ -136,7 +136,7 @@ function isLegallyUn(nodeID: IdType, L: Labelling, edges: Edge[]){
     return false;
 }
 
-
+//returns all super illegally in arguments
 function getSuperIllegallyInArg(L: Labelling, edges: Edge[]): IdType[] {
     let superIllegalIn:IdType[] = []
     const nodes = getIllegallyInNodes(L, edges);
@@ -164,12 +164,12 @@ function getSuperIllegallyInArg(L: Labelling, edges: Edge[]): IdType[] {
 }
 
 function transitionStep(old: Labelling, x: IdType, edges:Edge[]): Labelling {
+    //label node out
     const L = copyLabelling(old)
     L.set(x, 'red');
     const children = getOutChildren(L, x, edges);
     const check = [x, ...children]
-    
-    console.log(check)
+    //then check for illegally out arguments and change them to grey
     for (const nodeToCheck of check){
         if (!isLegallyOut(nodeToCheck, L, edges)){
             console.log('changed '+nodeToCheck+' to grey')

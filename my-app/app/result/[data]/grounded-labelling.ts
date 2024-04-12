@@ -1,6 +1,6 @@
-import error from "next/error";
 import { Edge, IdType, Node } from "react-vis-graph-wrapper";
 
+//executes grouned labelling
 export function groundedLabelling(nodes: Node[], edges: Edge[]){
     let newNodes = nodes;
     let dic: { [id: IdType] : string } = {}
@@ -10,6 +10,7 @@ export function groundedLabelling(nodes: Node[], edges: Edge[]){
             dic[node.id] = 'grey'
         }
     });
+    //will terminate when no change occurs (no more illegal nodes)
     let changed = true;
     while (changed){
         changed = false;
@@ -42,7 +43,7 @@ export function groundedLabelling(nodes: Node[], edges: Edge[]){
         });
     }
     
-
+    //returns node array with colour attribute
     return (newNodes.map((node)=>{
         let newNode:Node = {}
         if (node.id){

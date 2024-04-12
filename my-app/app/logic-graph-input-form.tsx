@@ -4,13 +4,13 @@ import { useState } from "react";
 import { createLogicGraphData } from "./actions";
 
 type Props = {};
-
+//Logic program input form
 const LogicGraphInputForm = (props: Props) => {
   const [formData, setFormData] = useState({
     facts: "",
     rules: "",
   });
-
+  //saves changes made in the form
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({
